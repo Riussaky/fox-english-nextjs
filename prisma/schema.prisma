@@ -1,0 +1,101 @@
+// Prisma schema — fox-english-app
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NOTA: usamos SQLite en desarrollo local para no depender de una cuenta
+// en la nube. Antes de desplegar en Vercel hay que cambiar el provider a
+// "postgresql" (ej. Neon) y volver a correr `prisma migrate dev`, porque
+// el filesystem de Vercel es efímero y SQLite no sirve en producción.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite no soporta enums nativos; los modelamos como String y los
+// validamos en la app con Zod (ver src/lib/types.ts). Los valores
+// posibles son: UserRole = "PARENT" | "TEACHER";
+// ActivityType = "FLASHCARDS" | "MEMORY" | "QUIZ" | "DRAG" | "SCRAMBLE"
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  role          String    @default("PARENT")
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+
+  accounts Account[]
+  sessions Session[]
+  children Child[]
+}
+
+model Child {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  avatarId  String
+  createdAt DateTime @default(now())
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempts LessonAttempt[]
+
+  @@index([userId])
+}
+
+// El contenido (niveles/lecciones/palabras) vive en código (src/lib/content.ts),
+// no en la base — a diferencia de NumiLandia, acá no hace falta una tabla
+// `Activity` porque lección×tipo-de-actividad son 75 pares fijos conocidos
+// de antemano. Se guarda un registro por intento; el mejor puntaje por
+// lección+actividad se calcula agregando en la query (MAX agrupado).
+model LessonAttempt {
+  id           String   @id @default(cuid())
+  childId      String
+  lessonKey    String // ej. "basico.colores"
+  activityType String // FLASHCARDS | MEMORY | QUIZ | DRAG | SCRAMBLE
+  starsEarned  Int
+  completedAt  DateTime @default(now())
+
+  child Child @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId])
+  @@index([childId, lessonKey])
+}
+
+// --- Auth.js (NextAuth) required models ---
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

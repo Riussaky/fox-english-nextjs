@@ -1,0 +1,29 @@
+{
+  "id": "/",
+  "name": "Fox English - Aprende inglés jugando",
+  "short_name": "Fox English",
+  "description": "Aplicación para que niños de 5 a 12 años aprendan inglés jugando, con progreso guardado y panel para familias y docentes.",
+  "start_url": "/jugar",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFF8EA",
+  "theme_color": "#4ECDC4",
+  "orientation": "any",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["education", "kids", "games"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
