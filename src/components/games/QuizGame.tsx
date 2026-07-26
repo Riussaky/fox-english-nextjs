@@ -81,7 +81,7 @@ export function QuizGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (star
 
   if (failed) {
     return (
-      <div className="flex flex-col items-center gap-4 text-center max-w-sm">
+      <div className="flex flex-col items-center gap-4 text-center max-w-sm bg-white/90 backdrop-blur rounded-blob px-6 py-6 shadow-lg">
         <h2 className="text-2xl font-bold text-kid-ink">¡Casi lo lográs!</h2>
         <p className="text-kid-ink/70">
           Acertaste {correctCount} de {questions.length}. ¡Intentalo de nuevo, vos podés! 💪
@@ -95,7 +95,7 @@ export function QuizGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (star
 
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-md">
-      <div className="w-full h-2 rounded-full bg-white/60 overflow-hidden">
+      <div className="w-full h-2 rounded-full bg-white/90 backdrop-blur overflow-hidden shadow-sm">
         <div
           className="h-full bg-kid-teal transition-all"
           style={{ width: `${(qIndex / questions.length) * 100}%` }}
@@ -104,7 +104,7 @@ export function QuizGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (star
       <div className="w-20 h-20">
         <WordIcon icon={q.word.icon} />
       </div>
-      <p className="text-lg font-semibold text-kid-ink text-center">
+      <p className="text-lg font-semibold text-kid-ink text-center bg-white/90 backdrop-blur rounded-full px-5 py-2.5 shadow-sm">
         ¿Cómo se dice <b>&quot;{q.word.es}&quot;</b> en inglés?
       </p>
       <div className="grid grid-cols-2 gap-3 w-full">

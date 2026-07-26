@@ -1,16 +1,20 @@
 // Contenido estático: niveles, lecciones y vocabulario. Portado de
 // ingles-kids-app/data.js — mismas 90 palabras, mismos íconos (ahora como
 // datos tipados en vez de strings SVG armadas a mano; ver WordIcon.tsx para
-// el render). No se generan con IA: un ícono de vocabulario tiene que ser
-// exacto (una manzana reconocible como "apple"), así que se mantiene el
-// dibujo en código/emoji.
+// el render). La mayoría se mantiene en código/emoji (un ícono de
+// vocabulario tiene que ser exacto — una manzana reconocible como "apple").
+// Algunas palabras (ej. los animales) usan además un retrato ilustrado con
+// IA (mismo pipeline que los avatares de NumiLandia) vía la variante
+// "illustrated" — con el emoji como respaldo automático si la imagen
+// generada no existe o falla al cargar.
 
 export type IconSpec =
   | { kind: "emoji"; char: string; bg: string }
   | { kind: "drop"; color: string }
   | { kind: "shape"; shape: "circle" | "square" | "triangle" | "star" | "heart" | "rectangle" }
   | { kind: "number"; n: number; color: string }
-  | { kind: "table" };
+  | { kind: "table" }
+  | { kind: "illustrated"; asset: string; fallbackChar: string; fallbackBg: string };
 
 export interface Word {
   en: string;
@@ -42,6 +46,9 @@ function drop(color: string): IconSpec {
 function number(n: number, color: string): IconSpec {
   return { kind: "number", n, color };
 }
+function illustrated(asset: string, fallbackChar: string, fallbackBg: string): IconSpec {
+  return { kind: "illustrated", asset, fallbackChar, fallbackBg };
+}
 
 export const LEVELS: Level[] = [
   {
@@ -68,12 +75,12 @@ export const LEVELS: Level[] = [
         name: "Animales",
         icon: "🐾",
         words: [
-          { en: "cat", es: "gato", icon: emoji("🐱", "#FFF3E2") },
-          { en: "dog", es: "perro", icon: emoji("🐶", "#F2E7D8") },
-          { en: "bird", es: "pájaro", icon: emoji("🐦", "#E4F7FB") },
-          { en: "fish", es: "pez", icon: emoji("🐟", "#E1F1FC") },
-          { en: "rabbit", es: "conejo", icon: emoji("🐰", "#FCEFF5") },
-          { en: "lion", es: "león", icon: emoji("🦁", "#FDF1DD") },
+          { en: "cat", es: "gato", icon: illustrated("animals/cat", "🐱", "#FFF3E2") },
+          { en: "dog", es: "perro", icon: illustrated("animals/dog", "🐶", "#F2E7D8") },
+          { en: "bird", es: "pájaro", icon: illustrated("animals/bird", "🐦", "#E4F7FB") },
+          { en: "fish", es: "pez", icon: illustrated("animals/fish", "🐟", "#E1F1FC") },
+          { en: "rabbit", es: "conejo", icon: illustrated("animals/rabbit", "🐰", "#FCEFF5") },
+          { en: "lion", es: "león", icon: illustrated("animals/lion", "🦁", "#FDF1DD") },
         ],
       },
       {
@@ -128,12 +135,12 @@ export const LEVELS: Level[] = [
         name: "Comida",
         icon: "🍎",
         words: [
-          { en: "apple", es: "manzana", icon: emoji("🍎", "#FDECEC") },
-          { en: "banana", es: "plátano", icon: emoji("🍌", "#FFF8E0") },
+          { en: "apple", es: "manzana", icon: illustrated("comida/apple", "🍎", "#FDECEC") },
+          { en: "banana", es: "plátano", icon: illustrated("comida/banana", "🍌", "#FFF8E0") },
           { en: "bread", es: "pan", icon: emoji("🍞", "#FCF0DE") },
-          { en: "milk", es: "leche", icon: emoji("🥛", "#EAF6FF") },
-          { en: "egg", es: "huevo", icon: emoji("🥚", "#FFF8EA") },
-          { en: "cake", es: "pastel", icon: emoji("🍰", "#FEF0F3") },
+          { en: "milk", es: "leche", icon: illustrated("comida/milk", "🥛", "#EAF6FF") },
+          { en: "egg", es: "huevo", icon: illustrated("comida/egg", "🥚", "#FFF8EA") },
+          { en: "cake", es: "pastel", icon: illustrated("comida/cake", "🍰", "#FEF0F3") },
         ],
       },
       {
@@ -141,12 +148,12 @@ export const LEVELS: Level[] = [
         name: "Familia",
         icon: "👪",
         words: [
-          { en: "mom", es: "mamá", icon: emoji("👩", "#FDEFF5") },
-          { en: "dad", es: "papá", icon: emoji("👨", "#EAF2FE") },
-          { en: "sister", es: "hermana", icon: emoji("👧", "#F3ECFC") },
-          { en: "brother", es: "hermano", icon: emoji("👦", "#EAF7EC") },
-          { en: "baby", es: "bebé", icon: emoji("👶", "#FFF8E0") },
-          { en: "grandma", es: "abuela", icon: emoji("👵", "#F6EAF1") },
+          { en: "mom", es: "mamá", icon: illustrated("familia/mom", "👩", "#FDEFF5") },
+          { en: "dad", es: "papá", icon: illustrated("familia/dad", "👨", "#EAF2FE") },
+          { en: "sister", es: "hermana", icon: illustrated("familia/sister", "👧", "#F3ECFC") },
+          { en: "brother", es: "hermano", icon: illustrated("familia/brother", "👦", "#EAF7EC") },
+          { en: "baby", es: "bebé", icon: illustrated("familia/baby", "👶", "#FFF8E0") },
+          { en: "grandma", es: "abuela", icon: illustrated("familia/grandma", "👵", "#F6EAF1") },
         ],
       },
       {
@@ -154,12 +161,12 @@ export const LEVELS: Level[] = [
         name: "La Casa",
         icon: "🏠",
         words: [
-          { en: "house", es: "casa", icon: emoji("🏠", "#FFF3E9") },
-          { en: "bed", es: "cama", icon: emoji("🛏️", "#EAF2FE") },
-          { en: "chair", es: "silla", icon: emoji("🪑", "#FDF1DD") },
+          { en: "house", es: "casa", icon: illustrated("casa/house", "🏠", "#FFF3E9") },
+          { en: "bed", es: "cama", icon: illustrated("casa/bed", "🛏️", "#EAF2FE") },
+          { en: "chair", es: "silla", icon: illustrated("casa/chair", "🪑", "#FDF1DD") },
           { en: "table", es: "mesa", icon: { kind: "table" } },
-          { en: "door", es: "puerta", icon: emoji("🚪", "#F2E7D8") },
-          { en: "window", es: "ventana", icon: emoji("🪟", "#EAF6FD") },
+          { en: "door", es: "puerta", icon: illustrated("casa/door", "🚪", "#F2E7D8") },
+          { en: "window", es: "ventana", icon: illustrated("casa/window", "🪟", "#EAF6FD") },
         ],
       },
       {
@@ -169,8 +176,8 @@ export const LEVELS: Level[] = [
         words: [
           { en: "book", es: "libro", icon: emoji("📖", "#EAF2FE") },
           { en: "pencil", es: "lápiz", icon: emoji("✏️", "#FFF8DE") },
-          { en: "backpack", es: "mochila", icon: emoji("🎒", "#FFEEDC") },
-          { en: "scissors", es: "tijeras", icon: emoji("✂️", "#F0F0F7") },
+          { en: "backpack", es: "mochila", icon: illustrated("escuela/backpack", "🎒", "#FFEEDC") },
+          { en: "scissors", es: "tijeras", icon: illustrated("escuela/scissors", "✂️", "#F0F0F7") },
           { en: "ruler", es: "regla", icon: emoji("📏", "#FFF8DE") },
           { en: "crayon", es: "crayón", icon: emoji("🖍️", "#EAF7EC") },
         ],
@@ -180,12 +187,12 @@ export const LEVELS: Level[] = [
         name: "Transporte",
         icon: "🚗",
         words: [
-          { en: "car", es: "carro", icon: emoji("🚗", "#FFEDED") },
-          { en: "bus", es: "autobús", icon: emoji("🚌", "#FFF8DE") },
-          { en: "bike", es: "bicicleta", icon: emoji("🚲", "#EAF2FE") },
-          { en: "train", es: "tren", icon: emoji("🚂", "#FEEEF2") },
-          { en: "plane", es: "avión", icon: emoji("✈️", "#EAF2FE") },
-          { en: "boat", es: "barco", icon: emoji("⛵", "#EAF6FD") },
+          { en: "car", es: "carro", icon: illustrated("transporte/car", "🚗", "#FFEDED") },
+          { en: "bus", es: "autobús", icon: illustrated("transporte/bus", "🚌", "#FFF8DE") },
+          { en: "bike", es: "bicicleta", icon: illustrated("transporte/bike", "🚲", "#EAF2FE") },
+          { en: "train", es: "tren", icon: illustrated("transporte/train", "🚂", "#FEEEF2") },
+          { en: "plane", es: "avión", icon: illustrated("transporte/plane", "✈️", "#EAF2FE") },
+          { en: "boat", es: "barco", icon: illustrated("transporte/boat", "⛵", "#EAF6FD") },
         ],
       },
     ],
@@ -201,12 +208,12 @@ export const LEVELS: Level[] = [
         name: "Acciones",
         icon: "🏃",
         words: [
-          { en: "run", es: "correr", icon: emoji("🏃", "#EAF2FE") },
-          { en: "jump", es: "saltar", icon: emoji("🤸", "#FFEEDC") },
+          { en: "run", es: "correr", icon: illustrated("verbos/run", "🏃", "#EAF2FE") },
+          { en: "jump", es: "saltar", icon: illustrated("verbos/jump", "🤸", "#FFEEDC") },
           { en: "eat", es: "comer", icon: emoji("🍴", "#EAF7EC") },
-          { en: "sleep", es: "dormir", icon: emoji("😴", "#F3EEFD") },
-          { en: "read", es: "leer", icon: emoji("📖", "#FFEDED") },
-          { en: "play", es: "jugar", icon: emoji("🧸", "#FEEFF3") },
+          { en: "sleep", es: "dormir", icon: illustrated("verbos/sleep", "😴", "#F3EEFD") },
+          { en: "read", es: "leer", icon: illustrated("verbos/read", "📖", "#FFEDED") },
+          { en: "play", es: "jugar", icon: illustrated("verbos/play", "🧸", "#FEEFF3") },
         ],
       },
       {
@@ -214,12 +221,12 @@ export const LEVELS: Level[] = [
         name: "El Clima",
         icon: "☀️",
         words: [
-          { en: "sun", es: "sol", icon: emoji("☀️", "#FFF8DE") },
-          { en: "cloud", es: "nube", icon: emoji("☁️", "#EEF4F8") },
-          { en: "rain", es: "lluvia", icon: emoji("🌧️", "#E7EFF5") },
-          { en: "snow", es: "nieve", icon: emoji("❄️", "#EEF5FA") },
-          { en: "wind", es: "viento", icon: emoji("💨", "#EAF6FD") },
-          { en: "storm", es: "tormenta", icon: emoji("⛈️", "#E5EAEE") },
+          { en: "sun", es: "sol", icon: illustrated("clima/sun", "☀️", "#FFF8DE") },
+          { en: "cloud", es: "nube", icon: illustrated("clima/cloud", "☁️", "#EEF4F8") },
+          { en: "rain", es: "lluvia", icon: illustrated("clima/rain", "🌧️", "#E7EFF5") },
+          { en: "snow", es: "nieve", icon: illustrated("clima/snow", "❄️", "#EEF5FA") },
+          { en: "wind", es: "viento", icon: illustrated("clima/wind", "💨", "#EAF6FD") },
+          { en: "storm", es: "tormenta", icon: illustrated("clima/storm", "⛈️", "#E5EAEE") },
         ],
       },
       {
@@ -228,11 +235,11 @@ export const LEVELS: Level[] = [
         icon: "😊",
         words: [
           { en: "happy", es: "feliz", icon: emoji("😄", "#FFE873") },
-          { en: "sad", es: "triste", icon: emoji("😢", "#AFCBEE") },
+          { en: "sad", es: "triste", icon: illustrated("emociones/sad", "😢", "#AFCBEE") },
           { en: "angry", es: "enojado", icon: emoji("😠", "#F5A6A6") },
-          { en: "scared", es: "asustado", icon: emoji("😱", "#C9B8F5") },
-          { en: "surprised", es: "sorprendido", icon: emoji("😲", "#FFD1E6") },
-          { en: "tired", es: "cansado", icon: emoji("🥱", "#E4D9C4") },
+          { en: "scared", es: "asustado", icon: illustrated("emociones/scared", "😱", "#C9B8F5") },
+          { en: "surprised", es: "sorprendido", icon: illustrated("emociones/surprised", "😲", "#FFD1E6") },
+          { en: "tired", es: "cansado", icon: illustrated("emociones/tired", "🥱", "#E4D9C4") },
         ],
       },
       {
@@ -240,12 +247,12 @@ export const LEVELS: Level[] = [
         name: "Adjetivos",
         icon: "⚡",
         words: [
-          { en: "big", es: "grande", icon: emoji("🐘", "#EAF2FE") },
-          { en: "small", es: "pequeño", icon: emoji("🐜", "#FFEDED") },
-          { en: "fast", es: "rápido", icon: emoji("⚡", "#FFF8DE") },
-          { en: "slow", es: "lento", icon: emoji("🐢", "#EAF7EC") },
-          { en: "hot", es: "caliente", icon: emoji("🔥", "#FFEDED") },
-          { en: "cold", es: "frío", icon: emoji("🧊", "#EAF6FD") },
+          { en: "big", es: "grande", icon: illustrated("adjetivos/big", "🐘", "#EAF2FE") },
+          { en: "small", es: "pequeño", icon: illustrated("adjetivos/small", "🐜", "#FFEDED") },
+          { en: "fast", es: "rápido", icon: illustrated("adjetivos/fast", "⚡", "#FFF8DE") },
+          { en: "slow", es: "lento", icon: illustrated("adjetivos/slow", "🐢", "#EAF7EC") },
+          { en: "hot", es: "caliente", icon: illustrated("adjetivos/hot", "🔥", "#FFEDED") },
+          { en: "cold", es: "frío", icon: illustrated("adjetivos/cold", "🧊", "#EAF6FD") },
         ],
       },
       {
@@ -253,12 +260,12 @@ export const LEVELS: Level[] = [
         name: "Lugares",
         icon: "🏙️",
         words: [
-          { en: "park", es: "parque", icon: emoji("🏞️", "#EAF7EC") },
-          { en: "school", es: "escuela", icon: emoji("🏫", "#FFF3E9") },
-          { en: "beach", es: "playa", icon: emoji("🏖️", "#FFF8E5") },
-          { en: "zoo", es: "zoológico", icon: emoji("🦓", "#FDF1DD") },
-          { en: "store", es: "tienda", icon: emoji("🏬", "#FEEEF2") },
-          { en: "hospital", es: "hospital", icon: emoji("🏥", "#F0F0F7") },
+          { en: "park", es: "parque", icon: illustrated("lugares/park", "🏞️", "#EAF7EC") },
+          { en: "school", es: "escuela", icon: illustrated("lugares/school", "🏫", "#FFF3E9") },
+          { en: "beach", es: "playa", icon: illustrated("lugares/beach", "🏖️", "#FFF8E5") },
+          { en: "zoo", es: "zoológico", icon: illustrated("lugares/zoo", "🦓", "#FDF1DD") },
+          { en: "store", es: "tienda", icon: illustrated("lugares/store", "🏬", "#FEEEF2") },
+          { en: "hospital", es: "hospital", icon: illustrated("lugares/hospital", "🏥", "#F0F0F7") },
         ],
       },
     ],

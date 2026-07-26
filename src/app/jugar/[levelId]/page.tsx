@@ -40,15 +40,12 @@ export default async function LevelPage({ params }: { params: Promise<{ levelId:
             <Link
               key={lesson.id}
               href={`/jugar/${level.id}/${lesson.id}`}
-              className="flex items-center gap-4 rounded-blob bg-white/90 backdrop-blur p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+              className="flex flex-col gap-2 rounded-blob bg-white/90 backdrop-blur p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
             >
-              <span className="text-3xl">{lesson.icon}</span>
-              <div className="flex-1">
-                <p className="font-bold text-kid-ink">{lesson.name}</p>
-                <p className="text-xs text-kid-ink/50">
-                  ⭐ {earned} / {MAX_LESSON_STARS}
-                </p>
-              </div>
+              <span className="text-xl font-bold text-kid-ink">{lesson.name}</span>
+              <span className="text-xs font-semibold text-kid-ink/50">
+                ⭐ {earned} / {MAX_LESSON_STARS}
+              </span>
             </Link>
           );
         })}

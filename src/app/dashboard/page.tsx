@@ -41,7 +41,7 @@ async function ChildProgressCard({ child }: { child: Child & { attempts: LessonA
             const resolved = resolveLessonKey(attempt.lessonKey);
             const activityLabel =
               ACTIVITY_META[attempt.activityType as keyof typeof ACTIVITY_META]?.label ?? attempt.activityType;
-            const title = resolved ? `${resolved.lesson.icon} ${resolved.lesson.name} — ${activityLabel}` : attempt.lessonKey;
+            const title = resolved ? `${resolved.lesson.name} — ${activityLabel}` : attempt.lessonKey;
             return (
               <div key={attempt.id} className="flex items-center justify-between text-sm">
                 <span className="text-kid-ink/80">{title}</span>

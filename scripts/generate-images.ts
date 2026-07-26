@@ -257,7 +257,170 @@ const AVATARS: Asset[] = [
   },
 ];
 
-const ASSETS: Asset[] = [...BACKGROUNDS, ...MASCOT, ...AVATARS];
+// --- Íconos ilustrados de vocabulario (uno por palabra, con emoji de
+// respaldo definido en content.ts si la imagen no existe o falla al
+// cargar). Dos estilos: "personaje" para animales/familia/emociones
+// (retrato de un personaje) y "objeto" para todo lo demás (un solo objeto
+// centrado). Mismo pipeline y estética que los avatares de perfil. ---
+
+const CHAR_ICON_STYLE =
+  "children's book illustration, painted gouache and watercolor texture, warm whimsical storybook style, hand-painted, soft brush texture, no photorealism, no 3D render, no text, no watermark, simple minimal flat pastel background, centered, single character, alone, full view not cropped";
+const CHAR_ICON_NEGATIVE =
+  "photograph, photorealistic, 3D render, CGI, blurry, text, watermark, signature, multiple characters, cropped, low quality, busy background, patterned background, duplicate, second character, pair, group, scary, circular frame, border, vignette";
+
+function charIcon(file: string, subject: string, extraNegative = ""): Asset {
+  return {
+    file,
+    prompt: `single image, ${subject}, ${CHAR_ICON_STYLE}`,
+    negativePrompt: extraNegative ? `${CHAR_ICON_NEGATIVE}, ${extraNegative}` : CHAR_ICON_NEGATIVE,
+    width: 640,
+    height: 640,
+  };
+}
+
+const OBJ_ICON_STYLE =
+  "children's book illustration, painted gouache and watercolor texture, warm whimsical storybook style, hand-painted, soft brush texture, no photorealism, no 3D render, no text, no watermark, no letters, no numbers, simple minimal flat pastel background, centered, single object, full view";
+const OBJ_ICON_NEGATIVE =
+  "photograph, photorealistic, 3D render, CGI, blurry, text, watermark, signature, numbers, letters, multiple objects, cropped, low quality, busy background, patterned background, duplicate, second object, pair, group, people, hands";
+
+function objIcon(file: string, subject: string, extraNegative = ""): Asset {
+  return {
+    file,
+    prompt: `single image, a single ${subject}, ${OBJ_ICON_STYLE}`,
+    negativePrompt: extraNegative ? `${OBJ_ICON_NEGATIVE}, ${extraNegative}` : OBJ_ICON_NEGATIVE,
+    width: 640,
+    height: 640,
+  };
+}
+
+const WORD_ICONS: Asset[] = [
+  // Animales
+  charIcon("animals/cat", "a cute cartoon cat character, orange and white fur, big round eyes, sitting pose"),
+  charIcon("animals/dog", "a cute cartoon puppy character, tan and white fur, floppy ears, sitting pose"),
+  charIcon("animals/bird", "a cute cartoon bluebird character, round fluffy body, small orange beak, perched pose"),
+  charIcon(
+    "animals/fish",
+    "single alone cute cartoon clownfish character, orange body with a couple of white stripes outlined in black, swimming pose, plain solid background",
+    "striped background, stripes in background, zebra pattern, barcode pattern, repeating pattern, tiled, seamless pattern, wallpaper, texture, school of fish, many fish, multiple fish, duplicate, second fish, pair, group"
+  ),
+  charIcon("animals/rabbit", "a cute cartoon rabbit character, white and cream fur, long floppy ears, sitting pose"),
+  charIcon("animals/lion", "a cute cartoon lion character with a fluffy golden mane, big round eyes, sitting pose"),
+
+  // Familia (personajes, no fotorrealistas)
+  charIcon(
+    "familia/mom",
+    "a cute cartoon illustration of a smiling young mom character in her twenties, warm friendly face, brown hair",
+    "elderly, old woman, gray hair, wrinkles, grandmother"
+  ),
+  charIcon("familia/dad", "a cute cartoon illustration of a smiling dad character, warm friendly face"),
+  charIcon(
+    "familia/sister",
+    "a cute cartoon illustration of a smiling young girl character with pigtails",
+    "comic panels, multiple panels, grid, collage, split image, unrelated objects"
+  ),
+  charIcon("familia/brother", "a cute cartoon illustration of a smiling young boy character"),
+  charIcon("familia/baby", "a cute cartoon illustration of a smiling baby character, chubby cheeks, tiny tuft of hair"),
+  charIcon("familia/grandma", "a cute cartoon illustration of a smiling grandma character, gray hair in a bun, glasses"),
+
+  // Comida
+  objIcon("comida/apple", "shiny red apple with a green leaf", "picture frame, framed, wall art, poster, mat border"),
+  objIcon("comida/banana", "ripe yellow banana"),
+  // "bread" se probó 3 veces (imagen negra bloqueada, fondo de libro,
+  // patrón de panes repetido) y se descartó — se queda con el emoji
+  // original en content.ts.
+  objIcon("comida/milk", "glass of milk with a striped straw"),
+  objIcon("comida/egg", "white egg sitting in a small nest"),
+  objIcon("comida/cake", "slice of pink frosted birthday cake"),
+
+  // La Casa
+  objIcon("casa/house", "cozy cottage house with a red roof"),
+  objIcon("casa/bed", "cozy bed with a solid navy blue blanket and a white pillow", "striped background, stripes in background, patterned background"),
+  objIcon("casa/chair", "cute wooden chair"),
+  objIcon("casa/door", "wooden door with a round doorknob"),
+  objIcon("casa/window", "window with blue curtains"),
+
+  // La Escuela
+  // "book", "pencil", "ruler" y "crayon" se probaron 3 veces cada uno
+  // (deriva de sujeto, patrones repetidos tipo collage/tiling, objetos
+  // duplicados) y se descartaron — se quedan con el emoji original en
+  // content.ts.
+  objIcon("escuela/backpack", "colorful kids backpack"),
+  objIcon(
+    "escuela/scissors",
+    "a pair of blunt-tipped blue plastic safety scissors for children, rounded tips, no sharp blade",
+    "knife, blade, sharp, weapon, people, hands, child, boy, girl"
+  ),
+
+  // Transporte
+  objIcon("transporte/car", "cute red car"),
+  objIcon("transporte/bus", "cute yellow school bus"),
+  objIcon("transporte/bike", "cute blue bicycle"),
+  objIcon("transporte/train", "cute red toy train engine"),
+  objIcon("transporte/plane", "cute white airplane"),
+  objIcon("transporte/boat", "cute little sailboat"),
+
+  // Acciones (personaje realizando la acción, o el objeto asociado)
+  charIcon("verbos/run", "a cute cartoon bunny character running joyfully"),
+  charIcon("verbos/jump", "a cute cartoon bunny character jumping high with joy"),
+  // "eat" se probó 3 veces (sin acción, fondo con patrón de sandías
+  // repetido) y se descartó — se queda con el emoji original en content.ts.
+  charIcon("verbos/sleep", "a cute cartoon cat character sleeping peacefully curled up"),
+  charIcon(
+    "verbos/read",
+    "a cute cartoon bunny character sitting and happily reading an open picture book, looking down at the pages",
+    "fox, human face, realistic, landscape, mountains, trees, blank pages, empty pages"
+  ),
+  objIcon("verbos/play", "cute teddy bear toy"),
+
+  // El Clima
+  objIcon("clima/sun", "cheerful smiling sun"),
+  objIcon("clima/cloud", "soft fluffy cloud"),
+  objIcon("clima/rain", "rain cloud with raindrops falling"),
+  objIcon("clima/snow", "snowflake with a little pile of snow"),
+  objIcon("clima/wind", "gentle swirl of wind with a few leaves blowing"),
+  objIcon("clima/storm", "dark storm cloud with a lightning bolt"),
+
+  // Emociones (carita de personaje redondo, sin rostro humano realista)
+  // "happy" y "angry" se probaron 3 veces cada uno (sujeto equivocado,
+  // collage de paneles, cuerpo/manos de más) y se descartaron — se quedan
+  // con el emoji original en content.ts.
+  charIcon("emociones/sad", "a cute round cartoon character face with a sad expression and one tear", "human face, realistic face"),
+  charIcon(
+    "emociones/scared",
+    "a cute round pale purple cartoon character face with big worried eyes and a small nervous open mouth, trembling",
+    "human face, realistic face, cat, animal, whiskers, ears, fur"
+  ),
+  charIcon(
+    "emociones/surprised",
+    "a cute round pink cartoon character face with a surprised open-mouth expression, raised eyebrows",
+    "human face, realistic face"
+  ),
+  charIcon("emociones/tired", "a cute round cartoon character face yawning sleepily", "human face, realistic face"),
+
+  // Adjetivos (mismos objetos/animales que el emoji original)
+  charIcon("adjetivos/big", "a single cute cartoon elephant"),
+  charIcon("adjetivos/small", "a single cute cartoon ant"),
+  objIcon("adjetivos/fast", "cheerful cartoon lightning bolt"),
+  charIcon("adjetivos/slow", "a single cute cartoon turtle"),
+  objIcon("adjetivos/hot", "cheerful cartoon flame"),
+  objIcon("adjetivos/cold", "cute ice cube"),
+
+  // Lugares
+  objIcon("lugares/park", "small park scene with a tree and a bench"),
+  objIcon("lugares/school", "cute schoolhouse building"),
+  objIcon("lugares/beach", "beach scene with a sandcastle and a seashell"),
+  charIcon("lugares/zoo", "a single cute cartoon zebra"),
+  objIcon("lugares/store", "small storefront building with a striped awning"),
+  objIcon("lugares/hospital", "small hospital building with a red cross sign"),
+
+  // Nota: "Mi Cuerpo" (cabeza/mano/pie/ojo/nariz/boca) se probó y se
+  // descartó — el modelo bloqueó 4 de 6 partes del cuerpo aisladas
+  // (imagen negra, probablemente el filtro de seguridad) y las otras 2
+  // mostraban una cara completa en vez de la parte específica. Esa
+  // lección se queda con el emoji original en content.ts.
+];
+
+const ASSETS: Asset[] = [...BACKGROUNDS, ...MASCOT, ...AVATARS, ...WORD_ICONS];
 
 function detectExtension(buffer: Buffer): "png" | "jpg" {
   if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) return "png";

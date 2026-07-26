@@ -94,7 +94,7 @@ export function MemoryGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (st
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-lg">
-      <p className="text-sm font-semibold text-kid-ink/60">
+      <p className="text-sm font-semibold text-kid-ink/70 bg-white/90 backdrop-blur rounded-full px-4 py-1.5 shadow-sm text-center">
         Encontrá la pareja: imagen + palabra ({matched.size / 2}/{totalPairs})
       </p>
       <div className="grid grid-cols-4 gap-3">

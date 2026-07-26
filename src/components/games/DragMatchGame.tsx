@@ -53,7 +53,12 @@ export function DragMatchGame({ lesson, onFinish }: { lesson: Lesson; onFinish: 
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
     chip.setPointerCapture(e.pointerId);
-    chip.classList.add("scale-110", "shadow-xl", "z-50");
+    // Ojo: nada de transform (scale/rotate) acá — al mover el chip con
+    // left/top fijos, un transform infla la caja alrededor de su centro sin
+    // mover el ancla left/top, así que el punto exacto donde el usuario
+    // agarró el chip se corre del cursor real (se veía "la respuesta lejos
+    // de la manito" al arrastrar con mouse).
+    chip.classList.add("shadow-xl", "z-50");
     chip.style.position = "fixed";
     chip.style.left = `${rect.left}px`;
     chip.style.top = `${rect.top}px`;
@@ -67,7 +72,7 @@ export function DragMatchGame({ lesson, onFinish }: { lesson: Lesson; onFinish: 
     function onUp(ev: PointerEvent) {
       chip.removeEventListener("pointermove", onMove);
       chip.removeEventListener("pointerup", onUp);
-      chip.classList.remove("scale-110", "shadow-xl", "z-50");
+      chip.classList.remove("shadow-xl", "z-50");
       chip.style.pointerEvents = "none";
       const dropEl = document.elementFromPoint(ev.clientX, ev.clientY);
       chip.style.pointerEvents = "";
@@ -103,7 +108,7 @@ export function DragMatchGame({ lesson, onFinish }: { lesson: Lesson; onFinish: 
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg">
-      <p className="text-sm font-semibold text-kid-ink/60">
+      <p className="text-sm font-semibold text-kid-ink/70 bg-white/90 backdrop-blur rounded-full px-4 py-1.5 shadow-sm text-center">
         Arrastrá cada palabra hacia su imagen ({placed.size}/{words.length})
       </p>
 

@@ -16,7 +16,7 @@ export function FlashcardsGame({ lesson, onFinish }: { lesson: Lesson; onFinish:
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-sm">
-      <p className="text-sm font-semibold text-kid-ink/60">
+      <p className="text-sm font-semibold text-kid-ink/70 bg-white/90 backdrop-blur rounded-full px-4 py-1.5 shadow-sm">
         Tarjeta {index + 1} de {lesson.words.length}
       </p>
 
@@ -48,7 +48,9 @@ export function FlashcardsGame({ lesson, onFinish }: { lesson: Lesson; onFinish:
         </div>
       </div>
 
-      <p className="text-xs text-kid-ink/50">Tocá la tarjeta para voltearla</p>
+      <p className="text-xs text-kid-ink/60 bg-white/85 backdrop-blur rounded-full px-3 py-1 shadow-sm">
+        Tocá la tarjeta para voltearla
+      </p>
 
       <div className="flex items-center gap-3">
         <KidButton

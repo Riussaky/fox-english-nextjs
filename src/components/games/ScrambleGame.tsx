@@ -97,13 +97,13 @@ export function ScrambleGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-sm">
-      <p className="text-sm font-semibold text-kid-ink/60">
+      <p className="text-sm font-semibold text-kid-ink/70 bg-white/90 backdrop-blur rounded-full px-4 py-1.5 shadow-sm">
         Palabra {index + 1} de {words.length}
       </p>
       <div className="w-20 h-20">
         <WordIcon icon={word.icon} />
       </div>
-      <p className="text-kid-ink/70">
+      <p className="text-kid-ink/80 font-semibold bg-white/90 backdrop-blur rounded-full px-4 py-1.5 shadow-sm">
         Pista: <b>&quot;{word.es}&quot;</b>
       </p>
 
@@ -141,7 +141,7 @@ export function ScrambleGame({ lesson, onFinish }: { lesson: Lesson; onFinish: (
       <button
         type="button"
         onClick={() => setSlots(new Array(word.en.length).fill(null))}
-        className="text-sm text-kid-ink/50 underline"
+        className="text-sm text-kid-ink/60 underline bg-white/85 backdrop-blur rounded-full px-3 py-1 shadow-sm"
       >
         🧹 Borrar
       </button>

@@ -35,7 +35,7 @@ export default async function LessonMenuPage({
       </Link>
 
       <h1 className="text-3xl font-bold text-kid-ink bg-white/85 backdrop-blur rounded-full px-6 py-2 shadow-sm">
-        {lesson.icon} {lesson.name}
+        {lesson.name}
       </h1>
       <p className="text-kid-ink/70 bg-white/85 backdrop-blur rounded-blob px-5 py-2 shadow-sm text-center max-w-sm">
         Elegí cómo querés practicar estas palabras.

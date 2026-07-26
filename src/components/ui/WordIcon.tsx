@@ -24,6 +24,30 @@ const NUMBER_DOT_POSITIONS: number[][] = [
 
 export function WordIcon({ icon }: { icon: IconSpec }) {
   switch (icon.kind) {
+    case "illustrated":
+      // El emoji de respaldo se dibuja siempre, debajo; la imagen
+      // ilustrada (generada con IA, mismo pipeline que los avatares de
+      // NumiLandia) se superpone encima. Si no existe o falla al cargar
+      // (onError), simplemente se oculta y queda visible el emoji de abajo
+      // — nunca se ve roto.
+      return (
+        <span className="relative block h-full w-full rounded-full overflow-hidden">
+          <Base bg={icon.fallbackBg}>
+            <text x={60} y={66} fontSize={66} textAnchor="middle" dominantBaseline="central">
+              {icon.fallbackChar}
+            </text>
+          </Base>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`/generated/${icon.asset}.png`}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        </span>
+      );
     case "emoji":
       return (
         <Base bg={icon.bg}>

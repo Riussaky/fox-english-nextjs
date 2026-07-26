@@ -69,30 +69,32 @@ export function GameRunner({
             ← Volver
           </Link>
           <h1 className="text-2xl font-bold text-kid-ink bg-white/85 backdrop-blur rounded-full px-6 py-2 shadow-sm">
-            {lesson.icon} {lesson.name} — {meta.label}
+            {lesson.name} — {meta.label}
           </h1>
-          <div className="bg-white/90 backdrop-blur rounded-blob p-6 shadow-lg w-full flex justify-center">
+          <div className="w-full max-w-2xl flex justify-center">
             <GameComponent lesson={lesson} onFinish={handleFinish} />
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center gap-4 text-center bg-white/90 backdrop-blur rounded-blob p-8 shadow-lg max-w-sm">
-          <AnimatedMascot mood="excited" srcs={mascotSrcs} className="w-24 h-24" />
-          <h2 className="text-2xl font-bold text-kid-ink">
-            {stars >= 3 ? "¡Perfecto! 🌟" : stars === 2 ? "¡Muy bien! 👍" : "¡Bien hecho! Seguí practicando"}
-          </h2>
-          <p className="text-kid-ink/60">{meta.label}</p>
-          <div className="text-3xl">
-            {"⭐".repeat(stars)}
-            {"☆".repeat(STARS_PER_ACTIVITY - stars)}
+        <div className="relative flex flex-col items-center w-full max-w-sm">
+          <AnimatedMascot mood="excited" srcs={mascotSrcs} className="relative z-10 w-24 h-24 -mb-10" />
+          <div className="flex flex-col items-center gap-4 text-center rounded-blob bg-white/90 backdrop-blur px-6 pt-14 pb-8 shadow-lg w-full">
+            <h2 className="text-2xl font-bold text-kid-ink">
+              {stars >= 3 ? "¡Perfecto! 🌟" : stars === 2 ? "¡Muy bien! 👍" : "¡Bien hecho! Seguí practicando"}
+            </h2>
+            <p className="text-kid-ink/60">{meta.label}</p>
+            <div className="text-3xl">
+              {"⭐".repeat(stars)}
+              {"☆".repeat(STARS_PER_ACTIVITY - stars)}
+            </div>
+            <Link
+              href={`/jugar/${levelId}/${lesson.id}`}
+              aria-disabled={saving}
+              className="rounded-full px-6 py-3 text-lg font-semibold shadow-[0_4px_0_rgba(0,0,0,0.15)] active:translate-y-1 active:shadow-none transition bg-kid-teal text-white hover:bg-kid-teal/90"
+            >
+              Continuar
+            </Link>
           </div>
-          <Link
-            href={`/jugar/${levelId}/${lesson.id}`}
-            aria-disabled={saving}
-            className="rounded-full px-6 py-3 text-lg font-semibold shadow-[0_4px_0_rgba(0,0,0,0.15)] active:translate-y-1 active:shadow-none transition bg-kid-teal text-white hover:bg-kid-teal/90"
-          >
-            Continuar
-          </Link>
         </div>
       )}
     </main>
