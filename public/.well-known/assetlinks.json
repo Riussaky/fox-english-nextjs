@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.fox_english_app.twa",
+      "sha256_cert_fingerprints": [
+        "64:7F:71:E5:8B:9F:A2:91:F5:7E:EF:DE:02:64:6B:E4:E3:12:A2:8D:6E:CD:91:66:66:10:F2:C9:2B:01:4B:1B"
+      ]
+    }
+  }
+]
