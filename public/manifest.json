@@ -24,6 +24,18 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
+    },
+    {
+      "src": "/generated/mascot/happy.png",
+      "sizes": "640x640",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/generated/mascot/happy.png",
+      "sizes": "640x640",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

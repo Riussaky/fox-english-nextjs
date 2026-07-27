@@ -4,18 +4,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// NOTA: usamos SQLite en desarrollo local para no depender de una cuenta
-// en la nube. Antes de desplegar en Vercel hay que cambiar el provider a
-// "postgresql" (ej. Neon) y volver a correr `prisma migrate dev`, porque
-// el filesystem de Vercel es efímero y SQLite no sirve en producción.
+// Postgres (Neon, vía la integración de Vercel) — el filesystem de Vercel
+// es efímero, así que SQLite no sirve en producción. DATABASE_URL se
+// completa automáticamente en .env.local (local) y en las variables de
+// entorno de Vercel (producción).
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// SQLite no soporta enums nativos; los modelamos como String y los
-// validamos en la app con Zod (ver src/lib/types.ts). Los valores
-// posibles son: UserRole = "PARENT" | "TEACHER";
+// Modelamos los enums como String y los validamos en la app con Zod (ver
+// src/lib/types.ts) para no tener que migrar el enum nativo de Postgres
+// cada vez que se agrega un valor. Los valores posibles son:
+// UserRole = "PARENT" | "TEACHER";
 // ActivityType = "FLASHCARDS" | "MEMORY" | "QUIZ" | "DRAG" | "SCRAMBLE"
 
 model User {
